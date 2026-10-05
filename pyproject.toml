@@ -1,0 +1,11 @@
+[project]
+name = "heart-disease-prediction"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "scikit-learn>=1.9.1",
+    "seaborn>=0.13.2",
+    "ucimlrepo>=0.0.7",
+]
