@@ -1,7 +1,8 @@
-
 # Heart Disease Prediction
 
 Binary classification of heart disease using the [UCI Heart Disease (Cleveland) dataset](https://archive.ics.uci.edu/dataset/45/heart+disease). The project compares a Logistic Regression baseline with Random Forest and XGBoost models, prioritizing **recall**, since missing a patient with heart disease is more costly than a false alarm.
+
+🔗 **[Live demo](https://heart-disease-prediction-wwega8j3hbfpwrk8wd6xhq.streamlit.app/)**
 
 ## Project Structure
 
@@ -77,6 +78,8 @@ See the Analysis section of `models.ipynb` for the full discussion.
 
 `app.py` is an interactive web app that estimates a patient's risk of heart disease using the Logistic Regression model.
 
+**Try it live:** [Open the app on Streamlit Community Cloud](https://heart-disease-prediction-wwega8j3hbfpwrk8wd6xhq.streamlit.app/)
+
 ### Running the app
 
 ```bash
@@ -122,13 +125,10 @@ Inputs must use the dataset's coding: `cp` 1–4, `restecg` 0–2, `slope` 1–3
 
 ## Future Work
 
-Move preprocessing into a scikit-learn `Pipeline` fitted on training data only
-
-Compare models with repeated stratified cross-validation
-
-Tune the decision threshold to increase recall
-
-Add model interpretation (e.g. Logistic Regression coefficients or SHAP values)
+- Move preprocessing into a scikit-learn `Pipeline` fitted on training data only
+- Compare models with repeated stratified cross-validation
+- Tune the decision threshold to increase recall
+- Add model interpretation (e.g. Logistic Regression coefficients or SHAP values)
 
 ## Disclaimer
 
