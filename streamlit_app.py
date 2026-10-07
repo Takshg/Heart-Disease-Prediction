@@ -67,7 +67,7 @@ with col2:
 
     oldpeak = st.number_input(
         "ST depression induced by exercise relative to rest", 
-        min_value = 1.0, max_value = 10.0, step=0.1, format="%.1f"
+        min_value = 0.0, max_value = 10.0, step=0.1, format="%.1f"
     )
     slope = st.selectbox(
         "Slope of the peak exercise ST segment (0: downsloping; 1: flat; 2: upsloping)", 

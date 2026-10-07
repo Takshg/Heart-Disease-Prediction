@@ -18,7 +18,7 @@ Heart-Disease-Prediction/
 │   └── xgboost.joblib            # XGBoost tuned with Bayesian optimization
 ├── eda.ipynb                     # Data cleaning, exploration and preprocessing
 ├── models.ipynb                  # Model training, tuning and evaluation
-├── app.py                        # Streamlit web app
+├── streamlit_app.py                        # Streamlit web app
 ├── main.py
 ├── pyproject.toml
 └── uv.lock
@@ -84,7 +84,7 @@ See the Analysis section of `models.ipynb` for the full discussion.
 
 ```bash
 uv add streamlit   # if not already installed
-uv run streamlit run app.py
+uv run streamlit run streamlit_app.py
 ```
 
 The app opens in your browser at `http://localhost:8501`. The `models/` folder must contain `logistic.joblib` and `preprocessor.joblib`, so run both notebooks first.
