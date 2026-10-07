@@ -11,11 +11,13 @@ Heart-Disease-Prediction/
 │   ├── heart_disease_data.csv    # Raw data fetched from the UCI repository
 │   └── processed_data.csv        # Cleaned, encoded and scaled data used for training
 ├── models/
+│   ├── preprocessor.joblib       # Fitted encoder and scaler used by the app
 │   ├── logistic.joblib           # Tuned Logistic Regression
 │   ├── randomforest.joblib       # Tuned Random Forest
 │   └── xgboost.joblib            # XGBoost tuned with Bayesian optimization
 ├── eda.ipynb                     # Data cleaning, exploration and preprocessing
 ├── models.ipynb                  # Model training, tuning and evaluation
+├── app.py                        # Streamlit web app
 ├── main.py
 ├── pyproject.toml
 └── uv.lock
@@ -71,16 +73,46 @@ Logistic Regression and XGBoost perform almost identically, each identifying 30 
 
 See the Analysis section of `models.ipynb` for the full discussion.
 
-## Using a Saved Model
+## Streamlit App
 
-```python
-from joblib import load
+`app.py` is an interactive web app that estimates a patient's risk of heart disease using the Logistic Regression model.
 
-model = load("models/logistic.joblib")
-predictions = model.predict(X)  # X must be preprocessed the same way as processed_data.csv
+### Running the app
+
+```bash
+uv add streamlit   # if not already installed
+uv run streamlit run app.py
 ```
 
-The preprocessing transformer is not saved, so new raw data must be encoded and scaled with the same steps as in `eda.ipynb` before prediction.
+The app opens in your browser at `http://localhost:8501`. The `models/` folder must contain `logistic.joblib` and `preprocessor.joblib`, so run both notebooks first.
+
+### How it works
+
+1. The user enters the 13 clinical features (age, sex, chest pain type, blood pressure, cholesterol and so on).
+2. The inputs are encoded and scaled with the saved preprocessor, using the same transformations as the training data.
+3. The model returns the estimated probability of heart disease.
+4. The result is shown as a **low**, **moderate** or **high** estimated risk band rather than a yes/no diagnosis, since a single cutoff makes nearby probabilities (e.g. 49% and 51%) look misleadingly different.
+
+### Using a saved model in your own code
+
+```python
+import pandas as pd
+from joblib import load
+
+preprocess = load("models/preprocessor.joblib")
+model = load("models/logistic.joblib")
+
+raw = pd.DataFrame([{
+    "age": 63, "sex": 1, "cp": 1, "trestbps": 145, "chol": 233, "fbs": 1,
+    "restecg": 2, "thalach": 150, "exang": 0, "oldpeak": 2.3, "slope": 3,
+    "ca": 0, "thal": 6.0,
+}])
+
+X = pd.DataFrame(preprocess.transform(raw), columns=preprocess.get_feature_names_out())
+probability = model.predict_proba(X)[0, 1]
+```
+
+Inputs must use the dataset's coding: `cp` 1–4, `restecg` 0–2, `slope` 1–3 and `thal` 3, 6 or 7.
 
 ## Limitations
 
@@ -90,10 +122,17 @@ The preprocessing transformer is not saved, so new raw data must be encoded and 
 
 ## Future Work
 
-- Move preprocessing into a scikit-learn `Pipeline` fitted on training data only, and save it with the model
-- Compare models with repeated stratified cross-validation
-- Tune the decision threshold to increase recall
-- Add model interpretation (e.g. Logistic Regression coefficients or SHAP values)
+Move preprocessing into a scikit-learn `Pipeline` fitted on training data only
+
+Compare models with repeated stratified cross-validation
+
+Tune the decision threshold to increase recall
+
+Add model interpretation (e.g. Logistic Regression coefficients or SHAP values)
+
+## Disclaimer
+
+This project is for educational purposes only and is not a medical diagnostic tool. The models were trained on a small historical dataset and their predictions should not be used to make health decisions. Anyone with concerns about their heart health should consult a qualified healthcare professional.
 
 ## Acknowledgements
 
